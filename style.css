@@ -1,3 +1,96 @@
+/* Overlay/modal background fix and new color scheme */
+.modal {
+  background: rgba(20, 20, 20, 0.95); /* nearly black, mostly opaque */
+  color: #fff;
+  border-radius: 12px;
+  box-shadow: 0 8px 32px 0 rgba(0,0,0,0.5);
+  backdrop-filter: blur(2px);
+}
+
+.modal .modal-content {
+  background: #111;
+  color: #fff;
+  border-radius: 10px;
+  padding: 2rem;
+  box-shadow: 0 4px 16px 0 rgba(0,0,0,0.3);
+}
+
+body {
+  background: #fff;
+  color: #111;
+}
+
+.artwork-card {
+  background: #fff;
+  border: 2px solid #bfa14a; /* gold */
+  color: #111;
+  box-shadow: 0 2px 8px 0 rgba(0,0,0,0.08);
+}
+
+.artwork-card-content {
+  background: #f5f5f5;
+  color: #111;
+}
+
+.artwork-title, .artist-name {
+  color: #111;
+}
+
+.ar-badge {
+  background: #bfa14a;
+  color: #fff;
+  border-radius: 4px;
+  padding: 2px 8px;
+  font-weight: bold;
+}
+
+.filter-btn.active, .filter-btn:focus {
+  background: #bfa14a;
+  color: #fff;
+  border: 1px solid #bfa14a;
+}
+
+.filter-btn {
+  background: #fff;
+  color: #111;
+  border: 1px solid #bfa14a;
+  transition: background 0.2s, color 0.2s;
+}
+
+button, .btn {
+  background: #111;
+  color: #fff;
+  border: 1px solid #bfa14a;
+  border-radius: 6px;
+  padding: 0.5em 1.2em;
+  font-weight: bold;
+  transition: background 0.2s, color 0.2s;
+}
+button:hover, .btn:hover {
+  background: #bfa14a;
+  color: #fff;
+}
+
+/* Message popups */
+.message {
+  background: #222;
+  color: #fff;
+  border-left: 6px solid #bfa14a;
+}
+
+/* Gold accent for links */
+a, a:visited {
+  color: #bfa14a;
+}
+a:hover {
+  color: #111;
+  background: #bfa14a;
+}
+
+/* Grey for secondary UI */
+.artwork-meta, .meta-item {
+  color: #888;
+}
 :root {
   /* Primitive Color Tokens */
 

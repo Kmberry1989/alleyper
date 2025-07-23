@@ -153,8 +153,8 @@ class ArtistAlleyGallery {
                 price: 3000,
                 currency: "USD",
                 description: "Bold spray paint artwork capturing the wild beauty of nature with vibrant colors and dynamic compositions.",
-                imageUrl: "assets/image/RadiantWild.jpg",
-                arModel: "assets/augmented/RadiantWild.usdz.usdz",
+                imageUrl: "assets/image/RadiantWilds.jpg",
+                arModel: "assets/augmented/RadiantWilds.usdz.usdz",
                 available: true,
                 category: "acrylic"
             },
@@ -387,9 +387,9 @@ class ArtistAlleyGallery {
     openARViewer() {
         if (!this.currentArtwork) return;
 
-        // Set up AR model viewer with a placeholder GLB URL
+        // Set up AR model viewer with the artwork's own AR model
         const modelViewer = document.getElementById('arModelViewer');
-        modelViewer.src = `https://modelviewer.dev/shared-assets/models/Astronaut.glb`; // Using a working sample model
+        modelViewer.src = this.currentArtwork.arModel;
         modelViewer.alt = `3D model of ${this.currentArtwork.title}`;
         modelViewer.poster = this.currentArtwork.imageUrl;
 
