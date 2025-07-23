@@ -83,7 +83,7 @@ body {
 
 .artwork-card {
   background: #fff;
-  border: 2px solid #bfa14a; /* gold */
+  border: none;
   color: #111;
   box-shadow: 0 2px 8px 0 rgba(0,0,0,0.08);
 }
@@ -91,6 +91,7 @@ body {
 .artwork-card-content {
   background: #f5f5f5;
   color: #111;
+  border: none;
 }
 
 .artwork-title, .artist-name {
@@ -1049,7 +1050,7 @@ select.form-control {
 
 .artwork-card {
   background: var(--color-surface);
-  border-radius: var(--radius-lg);
+  border: none;
   overflow: hidden;
   box-shadow: var(--shadow-sm);
   transition: all var(--duration-normal) var(--ease-standard);
@@ -1636,7 +1637,6 @@ select:focus-visible {
 .container, .info-grid, .modal-content, .artwork-card, .selected-artwork, .form-group, .notification-preferences, .checkbox-group {
   border: 2px solid #bfa14a !important;
   border-radius: 8px;
-  box-sizing: border-box;
 }
 
 /* Modal header and close button top right */
@@ -1679,7 +1679,7 @@ body {
   color: var(--color-text) !important;
 }
 
-.container, .info-grid, .modal-content, .artwork-card, .selected-artwork, .form-group, .notification-preferences, .checkbox-group {
+.container, .info-grid, .selected-artwork, .form-group, .notification-preferences, .checkbox-group {
   background: var(--color-surface) !important;
   color: var(--color-text) !important;
 }
@@ -1728,21 +1728,18 @@ button:hover, .btn:hover, .filter-btn:hover {
 }
 
 /* All container frames 1px wide, darken on focus/active/selected */
-.container, .info-grid, .modal-content, .artwork-card, .selected-artwork, .form-group, .notification-preferences, .checkbox-group {
-  border: 1px solid #bfa14a !important;
+.container, .info-grid, .selected-artwork, .form-group, .notification-preferences, .checkbox-group {
+  border: none !important;
   border-radius: 8px;
   box-sizing: border-box;
-  transition: border-color 0.2s, box-shadow 0.2s;
+  transition: border-color 0.25s cubic-bezier(0.4,0,0.2,1), box-shadow 0.25s cubic-bezier(0.4,0,0.2,1), background 0.25s cubic-bezier(0.4,0,0.2,1);
 }
 .container:focus, .container:active, .container.selected,
 .info-grid:focus, .info-grid:active, .info-grid.selected,
-.modal-content:focus, .modal-content:active, .modal-content.selected,
-.artwork-card:focus, .artwork-card:active, .artwork-card.selected,
 .selected-artwork:focus, .selected-artwork:active, .selected-artwork.selected,
 .form-group:focus, .form-group:active, .form-group.selected,
 .notification-preferences:focus, .notification-preferences:active, .notification-preferences.selected,
 .checkbox-group:focus, .checkbox-group:active, .checkbox-group.selected {
-  border-color: #7a6a2f !important;
   box-shadow: 0 0 0 2px rgba(191,161,74,0.18), 0 0 0 4px rgba(0,0,0,0.18);
   transition: border-color 0.25s cubic-bezier(0.4,0,0.2,1), box-shadow 0.25s cubic-bezier(0.4,0,0.2,1);
 }

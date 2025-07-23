@@ -434,7 +434,6 @@ class ArtistAlleyGallery {
         }
     }
 
-    // (removed misplaced code block)
     openInquiryModal() {
         if (!this.currentArtwork) return;
         // Set up mailto: link for inquiry form
@@ -534,7 +533,10 @@ class ArtistAlleyGallery {
         const modal = document.getElementById(modalId);
         modal.classList.add('active');
         modal.style.display = 'flex';
-        
+        // Prevent background scroll for gallery modal
+        if (modalId === 'artworkModal') {
+            document.body.style.overflow = 'hidden';
+        }
         // Focus management
         const firstFocusable = modal.querySelector('button, input, textarea, select, [tabindex]:not([tabindex="-1"])');
         if (firstFocusable) {
@@ -547,6 +549,9 @@ class ArtistAlleyGallery {
         modal.classList.remove('active');
         setTimeout(() => {
             modal.style.display = 'none';
+            if (modalId === 'artworkModal') {
+                document.body.style.overflow = '';
+            }
         }, 250);
     }
 
