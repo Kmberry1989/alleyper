@@ -234,7 +234,348 @@ class ArtistAlleyGallery {
         this.currentFilter = 'all';
         this.init();
     }
-    // ...existing code...
+    init() {
+        this.renderGallery();
+        this.bindEvents();
+    }
+
+    bindEvents() {
+        // Filter buttons
+        document.querySelectorAll('.filter-btn').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                e.preventDefault();
+                this.setFilter(e.target.dataset.filter);
+            });
+        });
+
+        // Form submissions
+        document.getElementById('inquiryForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            this.handleInquirySubmission(e);
+        });
+
+        document.getElementById('priceWatchForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            this.handlePriceWatchSubmission(e);
+        });
+
+        document.getElementById('generalNotificationForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            this.handleGeneralNotificationSubmission(e);
+        });
+
+        // Modal close handlers
+        document.addEventListener('click', (e) => {
+            if (e.target.classList.contains('modal')) {
+                this.closeModal(e.target.id);
+            }
+        });
+
+        // Keyboard navigation
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                this.closeAllModals();
+            }
+        });
+
+        // Add event listeners for artwork cards after they're rendered
+        this.bindArtworkCardEvents();
+    }
+
+    bindArtworkCardEvents() {
+        // Use event delegation for dynamically created elements
+        document.getElementById('artworkGrid').addEventListener('click', (e) => {
+            const artworkCard = e.target.closest('.artwork-card');
+            if (artworkCard) {
+                const artworkId = parseInt(artworkCard.dataset.artworkId);
+                this.openArtworkModal(artworkId);
+            }
+        });
+
+        // Keyboard support for artwork cards
+        document.getElementById('artworkGrid').addEventListener('keydown', (e) => {
+            const artworkCard = e.target.closest('.artwork-card');
+            if (artworkCard && (e.key === 'Enter' || e.key === ' ')) {
+                e.preventDefault();
+                const artworkId = parseInt(artworkCard.dataset.artworkId);
+                this.openArtworkModal(artworkId);
+            }
+        });
+    }
+
+    renderGallery() {
+        const grid = document.getElementById('artworkGrid');
+        const filteredArtworks = this.getFilteredArtworks();
+        
+        grid.innerHTML = filteredArtworks.map(artwork => `
+            <div class="artwork-card" data-artwork-id="${artwork.id}" tabindex="0" role="button" aria-label="View ${artwork.title} by ${artwork.artist}">
+                <img class="artwork-image" src="${artwork.imageUrl}" alt="${artwork.title}" loading="lazy" />
+                <div class="artwork-card-content">
+                    <h3 class="artwork-title">${artwork.title}</h3>
+                    <p class="artist-name">by ${artwork.artist}</p>
+                    <div class="artwork-meta">
+                        <div class="meta-item">
+                            <i class="fas fa-paint-brush" aria-hidden="true"></i>
+                            <span>${artwork.medium}</span>
+                        </div>
+                        <div class="meta-item">
+                            <i class="fas fa-ruler" aria-hidden="true"></i>
+                            <span>${artwork.dimensions}</span>
+                        </div>
+                        <div class="meta-item price-item">
+                            <i class="fas fa-tag" aria-hidden="true"></i>
+                            <span>${this.formatPrice(artwork)}</span>
+                        </div>
+                    </div>
+                    <div class="artwork-badges">
+                        <span class="ar-badge">
+                            <i class="fas fa-cube" aria-hidden="true"></i>
+                            AR Available
+                        </span>
+                    </div>
+                </div>
+            </div>
+        `).join('');
+
+        // Re-bind events after rendering
+        this.bindArtworkCardEvents();
+    }
+
+    getFilteredArtworks() {
+        if (this.currentFilter === 'all') {
+            return this.artworks;
+        }
+        return this.artworks.filter(artwork => artwork.category === this.currentFilter);
+    }
+
+    setFilter(filter) {
+        this.currentFilter = filter;
+        
+        // Update button states
+        document.querySelectorAll('.filter-btn').forEach(btn => {
+            btn.classList.remove('active');
+        });
+        document.querySelector(`[data-filter="${filter}"]`).classList.add('active');
+        
+        this.renderGallery();
+    }
+
+    formatPrice(artwork) {
+        if (artwork.price === null) {
+            return artwork.priceNote || 'Request price';
+        }
+        return `$${artwork.price.toLocaleString()} ${artwork.currency}`;
+    }
+
+    openArtworkModal(artworkId) {
+        this.currentArtwork = this.artworks.find(art => art.id === artworkId);
+        if (!this.currentArtwork) return;
+
+        // Populate modal content
+        document.getElementById('modalArtworkImage').src = this.currentArtwork.imageUrl;
+        document.getElementById('modalArtworkImage').alt = this.currentArtwork.title;
+        document.getElementById('modalArtworkTitle').textContent = this.currentArtwork.title;
+        document.getElementById('modalArtistName').textContent = `by ${this.currentArtwork.artist}`;
+        document.getElementById('modalMedium').textContent = this.currentArtwork.medium;
+        document.getElementById('modalDimensions').textContent = this.currentArtwork.dimensions;
+        document.getElementById('modalPrice').textContent = this.formatPrice(this.currentArtwork);
+        document.getElementById('modalDescription').textContent = this.currentArtwork.description;
+
+        this.showModal('artworkModal');
+    }
+
+    openARViewer() {
+        if (!this.currentArtwork) return;
+
+        // Set up AR model viewer with a placeholder GLB URL
+        const modelViewer = document.getElementById('arModelViewer');
+        modelViewer.src = `https://modelviewer.dev/shared-assets/models/Astronaut.glb`; // Using a working sample model
+        modelViewer.alt = `3D model of ${this.currentArtwork.title}`;
+        modelViewer.poster = this.currentArtwork.imageUrl;
+
+        this.showModal('arModal');
+    }
+
+    initializeARViewer() {
+        // Initialize model-viewer component when available
+        const modelViewer = document.getElementById('arModelViewer');
+        if (modelViewer) {
+            modelViewer.addEventListener('load', () => {
+                console.log('3D model loaded successfully');
+            });
+            
+            modelViewer.addEventListener('error', (error) => {
+                console.warn('3D model failed to load:', error);
+                this.showMessage('AR model temporarily unavailable. Please try again later.', 'info');
+            });
+        }
+    }
+
+    activateAR() {
+        const modelViewer = document.getElementById('arModelViewer');
+        if (modelViewer && modelViewer.canActivateAR) {
+            modelViewer.activateAR();
+        } else {
+            this.showMessage('AR viewing activated! On mobile devices, tap the AR icon in the model viewer to place the artwork in your space.', 'info');
+        }
+    }
+
+    openInquiryModal() {
+        if (!this.currentArtwork) return;
+
+        document.getElementById('inquiryArtworkTitle').textContent = this.currentArtwork.title;
+        document.getElementById('inquiryArtistName').textContent = this.currentArtwork.artist;
+        document.getElementById('inquiryPrice').textContent = this.formatPrice(this.currentArtwork);
+
+        this.showModal('inquiryModal');
+    }
+
+    openPriceWatchModal() {
+        if (!this.currentArtwork) return;
+
+        document.getElementById('watchArtworkTitle').textContent = this.currentArtwork.title;
+        this.showModal('priceWatchModal');
+    }
+
+    handleInquirySubmission(e) {
+        const formData = new FormData(e.target);
+        const inquiryData = {
+            artwork: this.currentArtwork,
+            name: formData.get('name'),
+            email: formData.get('email'),
+            phone: formData.get('phone'),
+            message: formData.get('message')
+        };
+
+        // Simulate form submission
+        this.showLoadingState(e.target);
+        
+        setTimeout(() => {
+            this.hideLoadingState(e.target);
+            this.showMessage('Your inquiry has been sent successfully! We\'ll contact you within 24 hours.', 'success');
+            this.closeModal('inquiryModal');
+            e.target.reset();
+        }, 2000);
+    }
+
+    handlePriceWatchSubmission(e) {
+        const formData = new FormData(e.target);
+        const watchData = {
+            watchType: formData.get('watchType'),
+            email: formData.get('email'),
+            notifications: formData.getAll('notifications'),
+            artwork: this.currentArtwork
+        };
+
+        this.showLoadingState(e.target);
+        
+        setTimeout(() => {
+            this.hideLoadingState(e.target);
+            this.showMessage('Price watch alert set up successfully! You\'ll receive notifications at the provided email.', 'success');
+            this.closeModal('priceWatchModal');
+            e.target.reset();
+        }, 1500);
+    }
+
+    handleGeneralNotificationSubmission(e) {
+        const formData = new FormData(e.target);
+        const notificationData = {
+            email: formData.get('email'),
+            preferences: formData.getAll('preferences')
+        };
+
+        this.showLoadingState(e.target);
+        
+        setTimeout(() => {
+            this.hideLoadingState(e.target);
+            this.showMessage('Successfully subscribed to gallery notifications!', 'success');
+            this.closeModal('notificationModal');
+            e.target.reset();
+        }, 1500);
+    }
+
+    showModal(modalId) {
+        const modal = document.getElementById(modalId);
+        modal.classList.add('active');
+        modal.style.display = 'flex';
+        
+        // Focus management
+        const firstFocusable = modal.querySelector('button, input, textarea, select, [tabindex]:not([tabindex="-1"])');
+        if (firstFocusable) {
+            setTimeout(() => firstFocusable.focus(), 100);
+        }
+    }
+
+    closeModal(modalId) {
+        const modal = document.getElementById(modalId);
+        modal.classList.remove('active');
+        setTimeout(() => {
+            modal.style.display = 'none';
+        }, 250);
+    }
+
+    closeAllModals() {
+        document.querySelectorAll('.modal').forEach(modal => {
+            this.closeModal(modal.id);
+        });
+    }
+
+    showMessage(message, type = 'info') {
+        const container = document.getElementById('messageContainer');
+        const messageEl = document.createElement('div');
+        messageEl.className = `message message--${type}`;
+        
+        const icon = type === 'success' ? 'check-circle' : type === 'error' ? 'exclamation-circle' : 'info-circle';
+        messageEl.innerHTML = `
+            <i class="fas fa-${icon}" aria-hidden="true"></i>
+            <span>${message}</span>
+        `;
+        
+        container.appendChild(messageEl);
+        
+        // Auto remove after 5 seconds
+        setTimeout(() => {
+            if (messageEl.parentNode) {
+                messageEl.style.animation = 'slideOutRight 0.3s ease-in';
+                setTimeout(() => {
+                    if (messageEl.parentNode) {
+                        container.removeChild(messageEl);
+                    }
+                }, 300);
+            }
+        }, 5000);
+    }
+
+    showLoadingState(form) {
+        const submitBtn = form.querySelector('button[type="submit"]');
+        submitBtn.disabled = true;
+        submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin" aria-hidden="true"></i> Sending...';
+    }
+
+    hideLoadingState(form) {
+        const submitBtn = form.querySelector('button[type="submit"]');
+        submitBtn.disabled = false;
+        // Restore original button content based on form
+        if (form.id === 'inquiryForm') {
+            submitBtn.innerHTML = '<i class="fas fa-paper-plane"></i> Send Inquiry';
+        } else if (form.id === 'priceWatchForm') {
+            submitBtn.innerHTML = '<i class="fas fa-bell"></i> Set Up Alerts';
+        } else if (form.id === 'generalNotificationForm') {
+            submitBtn.innerHTML = '<i class="fas fa-envelope"></i> Subscribe to Updates';
+        }
+    }
+
+    zoomImage() {
+        const img = document.getElementById('modalArtworkImage');
+        if (img.style.transform === 'scale(2)') {
+            img.style.transform = 'scale(1)';
+            img.style.cursor = 'zoom-in';
+        } else {
+            img.style.transform = 'scale(2)';
+            img.style.cursor = 'zoom-out';
+            img.style.transition = 'transform 0.3s ease';
+        }
+    }
 }
 
 // Initialize gallery instance globally
