@@ -1,3 +1,39 @@
+/* Initial screen image */
+#gallery:empty::before {
+  content: '';
+  display: block;
+  width: 100%;
+  height: 400px;
+  background: url('assets/image (42).jpg') center center/contain no-repeat, #fff;
+}
+
+/* Fit artwork thumbnails and zoom out on hover */
+.fit-thumb {
+  object-fit: contain;
+  width: 100%;
+  height: 180px;
+  transition: transform 0.2s, box-shadow 0.2s;
+  background: #eee;
+}
+.artwork-card:hover .fit-thumb {
+  transform: scale(0.85);
+  box-shadow: 0 0 0 2px #bfa14a;
+}
+
+/* Modal image always fits modal by default, zooms in only when .zoomed */
+#modalArtworkImage {
+  max-width: 90vw;
+  max-height: 70vh;
+  object-fit: contain;
+  transition: transform 0.3s;
+  cursor: zoom-in;
+}
+#modalArtworkImage.zoomed {
+  object-fit: contain;
+  transform: scale(2);
+  cursor: zoom-out;
+  z-index: 10;
+}
 /* Overlay/modal background fix and new color scheme */
 .modal {
   background: rgba(20, 20, 20, 0.95); /* nearly black, mostly opaque */

@@ -309,7 +309,7 @@ class ArtistAlleyGallery {
         
         grid.innerHTML = filteredArtworks.map(artwork => `
             <div class="artwork-card" data-artwork-id="${artwork.id}" tabindex="0" role="button" aria-label="View ${artwork.title} by ${artwork.artist}">
-                <img class="artwork-image" src="${artwork.imageUrl}" alt="${artwork.title}" loading="lazy" />
+                <img class="artwork-image fit-thumb" src="${artwork.imageUrl}" alt="${artwork.title}" loading="lazy" />
                 <div class="artwork-card-content">
                     <h3 class="artwork-title">${artwork.title}</h3>
                     <p class="artist-name">by ${artwork.artist}</p>
@@ -372,8 +372,10 @@ class ArtistAlleyGallery {
         if (!this.currentArtwork) return;
 
         // Populate modal content
-        document.getElementById('modalArtworkImage').src = this.currentArtwork.imageUrl;
-        document.getElementById('modalArtworkImage').alt = this.currentArtwork.title;
+        const modalImg = document.getElementById('modalArtworkImage');
+        modalImg.src = this.currentArtwork.imageUrl;
+        modalImg.alt = this.currentArtwork.title;
+        modalImg.classList.remove('zoomed'); // always fit to modal on open
         document.getElementById('modalArtworkTitle').textContent = this.currentArtwork.title;
         document.getElementById('modalArtistName').textContent = `by ${this.currentArtwork.artist}`;
         document.getElementById('modalMedium').textContent = this.currentArtwork.medium;
@@ -567,13 +569,12 @@ class ArtistAlleyGallery {
 
     zoomImage() {
         const img = document.getElementById('modalArtworkImage');
-        if (img.style.transform === 'scale(2)') {
-            img.style.transform = 'scale(1)';
+        if (img.classList.contains('zoomed')) {
+            img.classList.remove('zoomed');
             img.style.cursor = 'zoom-in';
         } else {
-            img.style.transform = 'scale(2)';
+            img.classList.add('zoomed');
             img.style.cursor = 'zoom-out';
-            img.style.transition = 'transform 0.3s ease';
         }
     }
 }
