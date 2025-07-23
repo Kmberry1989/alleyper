@@ -20,13 +20,16 @@
     transform: scale(1) translate(-5px, -10px);
   }
 }
-/* Initial screen image */
+/* Initial screen image with gold-black transparent gradient overlay */
 #gallery:empty::before {
   content: '';
   display: block;
   width: 100%;
   height: 400px;
-  background: url('assets/image (42).jpg') center center/contain no-repeat, #fff;
+  background:
+    linear-gradient(135deg, rgba(191,161,74,0.45) 0%, rgba(0,0,0,0.55) 100%),
+    url('assets/image/artist-alley-large-1024x682.jpg') center center/cover no-repeat;
+  border-radius: 12px;
 }
 
 /* Fit artwork thumbnails and zoom out on hover */
@@ -390,10 +393,10 @@ a:hover {
   --color-info: var(--color-gray-300);
   --color-focus-ring: rgba(var(--color-teal-300-rgb), 0.4);
   --color-btn-primary-text: var(--color-slate-900);
-  --color-card-border: rgba(var(--color-gray-400-rgb), 0.15);
+  --color-card-border: rgba(var(--color-gray-400-rgb), 0.2);
   --color-card-border-inner: rgba(var(--color-gray-400-rgb), 0.15);
   --shadow-inset-sm: inset 0 1px 0 rgba(255, 255, 255, 0.1),
-    inset 0 -1px 0 rgba(0, 0, 0, 0.15);
+      inset 0 -1px 0 rgba(0, 0, 0, 0.15);
   --color-border-secondary: rgba(var(--color-gray-400-rgb), 0.2);
   --color-select-caret: rgba(var(--color-gray-200-rgb), 0.8);
 
@@ -1658,4 +1661,135 @@ select:focus-visible {
   top: 1rem;
   right: 1rem;
   z-index: 2;
+}
+
+/* Switch to dark mode: set backgrounds to dark, text to light, and add icon spacing. Update CSS root variables and key selectors for a true dark theme and icon padding. */
+:root {
+  --color-background: #181818;
+  --color-surface: #222;
+  --color-text: #f5f5f5;
+  --color-text-secondary: #bfa14a;
+  --color-primary: #bfa14a;
+  --color-primary-hover: #d4af37;
+  --color-border: #bfa14a;
+}
+
+body {
+  background: var(--color-background) !important;
+  color: var(--color-text) !important;
+}
+
+.container, .info-grid, .modal-content, .artwork-card, .selected-artwork, .form-group, .notification-preferences, .checkbox-group {
+  background: var(--color-surface) !important;
+  color: var(--color-text) !important;
+}
+
+.artwork-card-content, .artwork-title, .artist-name, .modal, .modal-content, .modal-header, .modal-body, .form-label, .form-control, .message {
+  background: transparent !important;
+  color: var(--color-text) !important;
+}
+
+button, .btn, .filter-btn {
+  background: #222 !important;
+  color: #f5f5f5 !important;
+  border: 2px solid #bfa14a !important;
+}
+button:hover, .btn:hover, .filter-btn:hover {
+  background: #bfa14a !important;
+  color: #181818 !important;
+}
+
+/* Icon spacing */
+.fa, .fas, .far, .fal, .fab, [class^="fa-"] {
+  margin-right: 0.5em !important;
+  margin-left: 0.1em !important;
+}
+
+/* Modal background overlay */
+.modal {
+  background: rgba(20, 20, 20, 0.97) !important;
+}
+
+/* Misc: ensure all text is light in modals */
+.modal *, .modal-content * {
+  color: #f5f5f5 !important;
+}
+
+/* Initial screen image with gold-black transparent gradient overlay */
+#gallery:empty::before {
+  content: '';
+  display: block;
+  width: 100%;
+  height: 400px;
+  background:
+    linear-gradient(135deg, rgba(191,161,74,0.45) 0%, rgba(0,0,0,0.55) 100%),
+    url('assets/image/artist-alley-large-1024x682.jpg') center center/cover no-repeat;
+  border-radius: 12px;
+}
+
+/* All container frames 1px wide, darken on focus/active/selected */
+.container, .info-grid, .modal-content, .artwork-card, .selected-artwork, .form-group, .notification-preferences, .checkbox-group {
+  border: 1px solid #bfa14a !important;
+  border-radius: 8px;
+  box-sizing: border-box;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+.container:focus, .container:active, .container.selected,
+.info-grid:focus, .info-grid:active, .info-grid.selected,
+.modal-content:focus, .modal-content:active, .modal-content.selected,
+.artwork-card:focus, .artwork-card:active, .artwork-card.selected,
+.selected-artwork:focus, .selected-artwork:active, .selected-artwork.selected,
+.form-group:focus, .form-group:active, .form-group.selected,
+.notification-preferences:focus, .notification-preferences:active, .notification-preferences.selected,
+.checkbox-group:focus, .checkbox-group:active, .checkbox-group.selected {
+  border-color: #7a6a2f !important;
+  box-shadow: 0 0 0 2px rgba(191,161,74,0.18), 0 0 0 4px rgba(0,0,0,0.18);
+  transition: border-color 0.25s cubic-bezier(0.4,0,0.2,1), box-shadow 0.25s cubic-bezier(0.4,0,0.2,1);
+}
+
+/* Smooth, professional modal and interaction transitions */
+.modal.active {
+  animation: modalIn 0.45s cubic-bezier(0.4,0,0.2,1);
+}
+
+@keyframes modalIn {
+  0% {
+    opacity: 0;
+    transform: scale(0.96) translateY(40px);
+  }
+  60% {
+    opacity: 1;
+    transform: scale(1.02) translateY(-8px);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+.modal-content {
+  transition: box-shadow 0.35s cubic-bezier(0.4,0,0.2,1), transform 0.35s cubic-bezier(0.4,0,0.2,1);
+}
+
+button, .btn, .filter-btn {
+  transition: background 0.25s cubic-bezier(0.4,0,0.2,1), color 0.25s cubic-bezier(0.4,0,0.2,1), box-shadow 0.25s cubic-bezier(0.4,0,0.2,1), transform 0.18s cubic-bezier(0.4,0,0.2,1);
+}
+button:hover, .btn:hover, .filter-btn:hover {
+  transform: translateY(-2px) scale(1.04);
+  box-shadow: 0 4px 16px 0 rgba(191,161,74,0.18);
+}
+
+.artwork-card {
+  transition: box-shadow 0.35s cubic-bezier(0.4,0,0.2,1), border-color 0.25s cubic-bezier(0.4,0,0.2,1), transform 0.25s cubic-bezier(0.4,0,0.2,1);
+}
+.artwork-card:hover {
+  border-color: #d4af37;
+  transition: box-shadow 0.35s cubic-bezier(0.4,0,0.2,1), border-color 0.25s cubic-bezier(0.4,0,0.2,1), transform 0.25s cubic-bezier(0.4,0,0.2,1);
+}
+
+/* Smooth fade for modal overlay when closing */
+.modal:not(.active) {
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.35s cubic-bezier(0.4,0,0.2,1);
 }
