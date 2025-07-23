@@ -893,7 +893,7 @@ select.form-control {
 /* Hero Section */
 .hero-section {
   min-height: 100vh;
-  background: linear-gradient(135deg, rgba(33, 128, 141, 0.9), rgba(98, 108, 113, 0.8)), 
+  background: linear-gradient(135deg, rgba(0,0,0,0.92), rgba(0,0,0,0.85)), 
               url('https://pplx-res.cloudinary.com/image/upload/v1753230366/pplx_project_search_images/7c7020f76667016b8b41dc488668bc95dee3c023.jpg');
   background-size: cover;
   background-position: center;
@@ -909,7 +909,7 @@ select.form-control {
   left: 0;
   right: 0;
   bottom: 0;
-  background: linear-gradient(135deg, rgba(19, 52, 59, 0.8), rgba(33, 128, 141, 0.6));
+  background: linear-gradient(135deg, rgba(0,0,0,0.85), rgba(0,0,0,0.7));
   display: flex;
   align-items: center;
 }
@@ -1669,7 +1669,7 @@ select:focus-visible {
   --color-surface: #222;
   --color-text: #f5f5f5;
   --color-text-secondary: #bfa14a;
-  --color-primary: #bfa14a;
+  --color-primary: #c4ab61;
   --color-primary-hover: #d4af37;
   --color-border: #bfa14a;
 }
