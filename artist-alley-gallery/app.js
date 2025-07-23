@@ -153,8 +153,8 @@ class ArtistAlleyGallery {
                 price: 3000,
                 currency: "USD",
                 description: "Bold spray paint artwork capturing the wild beauty of nature with vibrant colors and dynamic compositions.",
-                imageUrl: "https://raw.githubusercontent.com/Kmberry1989/alleyper/74446d3c0411ab4ba1c99561c5cf07cae285da12/artist-alley-gallery/assets/image/RadiantWild.jpg",
-                arModel: "https://raw.githubusercontent.com/Kmberry1989/alleyper/74446d3c0411ab4ba1c99561c5cf07cae285da12/artist-alley-gallery/assets/augmented/Radiant%20wild.usdz.usdz",
+                imageUrl: "https://raw.githubusercontent.com/Kmberry1989/alleyper/74446d3c0411ab4ba1c99561c5cf07cae285da12/artist-alley-gallery/assets/image/RadiantWilds.jpg",
+                arModel: "https://raw.githubusercontent.com/Kmberry1989/alleyper/74446d3c0411ab4ba1c99561c5cf07cae285da12/artist-alley-gallery/assets/augmented/RadiantWilds.usdz.usdz",
                 available: true,
                 category: "mixed"
             },
