@@ -368,8 +368,11 @@ class ArtistAlleyGallery {
     }
 
     openArtworkModal(artworkId) {
-        this.currentArtwork = this.artworks.find(art => art.id === artworkId);
-        if (!this.currentArtwork) return;
+        // Find index for navigation
+        const idx = this.artworks.findIndex(art => art.id === artworkId);
+        if (idx === -1) return;
+        this.currentArtwork = this.artworks[idx];
+        this.currentArtworkIdx = idx;
 
         // Populate modal content
         const modalImg = document.getElementById('modalArtworkImage');
@@ -383,19 +386,28 @@ class ArtistAlleyGallery {
         document.getElementById('modalPrice').textContent = this.formatPrice(this.currentArtwork);
         document.getElementById('modalDescription').textContent = this.currentArtwork.description;
 
+        // Show/hide arrows
+        const prevBtn = document.getElementById('modalPrevBtn');
+        const nextBtn = document.getElementById('modalNextBtn');
+        if (prevBtn && nextBtn) {
+            prevBtn.style.display = (idx > 0) ? 'flex' : 'none';
+            nextBtn.style.display = (idx < this.artworks.length - 1) ? 'flex' : 'none';
+        }
+
         this.showModal('artworkModal');
+    }
+
+    handleModalArrowNav(direction) {
+        if (typeof this.currentArtworkIdx !== 'number') return;
+        let newIdx = this.currentArtworkIdx + direction;
+        if (newIdx < 0 || newIdx >= this.artworks.length) return;
+        this.openArtworkModal(this.artworks[newIdx].id);
     }
 
     openARViewer() {
         if (!this.currentArtwork) return;
-
-        // Set up AR model viewer with the artwork's own AR model
-        const modelViewer = document.getElementById('arModelViewer');
-        modelViewer.src = this.currentArtwork.arModel;
-        modelViewer.alt = `3D model of ${this.currentArtwork.title}`;
-        modelViewer.poster = this.currentArtwork.imageUrl;
-
-        this.showModal('arModal');
+        // Instead of AR viewer, just link to the AR model file for download
+        window.open(this.currentArtwork.arModel, '_blank');
     }
 
     initializeARViewer() {
@@ -422,19 +434,41 @@ class ArtistAlleyGallery {
         }
     }
 
+    // (removed misplaced code block)
     openInquiryModal() {
         if (!this.currentArtwork) return;
-
+        // Set up mailto: link for inquiry form
+        const subject = encodeURIComponent(`Artwork Inquiry: ${this.currentArtwork.title}`);
+        const body = encodeURIComponent(
+            `Artwork: ${this.currentArtwork.title}\nArtist: ${this.currentArtwork.artist}\nMedium: ${this.currentArtwork.medium}\nDimensions: ${this.currentArtwork.dimensions}\nPrice: ${this.formatPrice(this.currentArtwork)}\n\nYour message here...`
+        );
+        const mailto = `mailto:media@kaaonline.org?subject=${subject}&body=${body}`;
+        const form = document.getElementById('inquiryForm');
+        form.action = mailto;
+        // Pre-fill hidden fields for redundancy
+        document.getElementById('inquiryArtworkField').value = this.currentArtwork.title;
+        document.getElementById('inquiryArtistField').value = this.currentArtwork.artist;
+        document.getElementById('inquiryPriceField').value = this.formatPrice(this.currentArtwork);
         document.getElementById('inquiryArtworkTitle').textContent = this.currentArtwork.title;
         document.getElementById('inquiryArtistName').textContent = this.currentArtwork.artist;
         document.getElementById('inquiryPrice').textContent = this.formatPrice(this.currentArtwork);
-
         this.showModal('inquiryModal');
     }
 
     openPriceWatchModal() {
         if (!this.currentArtwork) return;
-
+        // Set up mailto: link for price watch form
+        const subject = encodeURIComponent(`Price Watch Request: ${this.currentArtwork.title}`);
+        const body = encodeURIComponent(
+            `Artwork: ${this.currentArtwork.title}\nArtist: ${this.currentArtwork.artist}\nMedium: ${this.currentArtwork.medium}\nDimensions: ${this.currentArtwork.dimensions}\nCurrent Price: ${this.formatPrice(this.currentArtwork)}\n\nNotify me if the price drops or the artwork becomes available.`
+        );
+        const mailto = `mailto:media@kaaonline.org?subject=${subject}&body=${body}`;
+        const form = document.getElementById('priceWatchForm');
+        form.action = mailto;
+        // Pre-fill hidden fields for redundancy
+        document.getElementById('watchArtworkField').value = this.currentArtwork.title;
+        document.getElementById('watchArtistField').value = this.currentArtwork.artist;
+        document.getElementById('watchPriceField').value = this.formatPrice(this.currentArtwork);
         document.getElementById('watchArtworkTitle').textContent = this.currentArtwork.title;
         this.showModal('priceWatchModal');
     }

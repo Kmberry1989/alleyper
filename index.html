@@ -92,7 +92,9 @@
             <div class="modal-body">
                 <div class="artwork-detail">
                     <div class="artwork-image-container">
+                        <button class="modal-arrow left" id="modalPrevBtn" aria-label="Previous artwork"><i class="fas fa-chevron-left"></i></button>
                         <img id="modalArtworkImage" src="" alt="" class="artwork-detail-image">
+                        <button class="modal-arrow right" id="modalNextBtn" aria-label="Next artwork"><i class="fas fa-chevron-right"></i></button>
                         <div class="image-controls">
                             <button class="btn btn--outline btn--sm" onclick="zoomImage()">
                                 <i class="fas fa-search-plus"></i> Zoom
@@ -184,6 +186,9 @@
                         <h4>Artwork: <span id="inquiryArtworkTitle"></span></h4>
                         <p>Artist: <span id="inquiryArtistName"></span></p>
                         <p>Price: <span id="inquiryPrice"></span></p>
+                        <input type="hidden" name="artwork" id="inquiryArtworkField">
+                        <input type="hidden" name="artist" id="inquiryArtistField">
+                        <input type="hidden" name="price" id="inquiryPriceField">
                     </div>
                     
                     <div class="form-group">
@@ -227,6 +232,9 @@
             </div>
             <div class="modal-body">
                 <form id="priceWatchForm" class="price-watch-form">
+                    <input type="hidden" name="artwork" id="watchArtworkField">
+                    <input type="hidden" name="artist" id="watchArtistField">
+                    <input type="hidden" name="price" id="watchPriceField">
                     <div class="watch-options">
                         <div class="option-group">
                             <input type="radio" id="watchSpecific" name="watchType" value="specific" checked>

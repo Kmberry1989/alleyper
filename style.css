@@ -1,3 +1,25 @@
+/* Ken Burns effect for gallery thumbnails */
+.fit-thumb {
+  object-fit: contain;
+  width: 100%;
+  height: 180px;
+  background: #eee;
+  transition: transform 0.8s cubic-bezier(0.4,0.0,0.2,1), filter 0.8s;
+  will-change: transform;
+}
+.artwork-card:hover .fit-thumb {
+  animation: kenburns-panzoom 3s linear forwards;
+  filter: brightness(1.05) contrast(1.1);
+}
+
+@keyframes kenburns-panzoom {
+  0% {
+    transform: scale(1.1) translate(0, 0);
+  }
+  100% {
+    transform: scale(1) translate(-5px, -10px);
+  }
+}
 /* Initial screen image */
 #gallery:empty::before {
   content: '';
@@ -96,7 +118,7 @@ body {
 button, .btn {
   background: #111;
   color: #fff;
-  border: 1px solid #bfa14a;
+  border: 2px solid #bfa14a;
   border-radius: 6px;
   padding: 0.5em 1.2em;
   font-weight: bold;
@@ -1157,10 +1179,11 @@ select.form-control {
 
 .modal-header {
   display: flex;
-  justify-content: space-between;
-  align-items: center;
+  align-items: flex-start;
+  justify-content: flex-end;
   padding: var(--space-20);
   border-bottom: 1px solid var(--color-border);
+  position: relative;
 }
 
 .modal-header h3 {
@@ -1177,11 +1200,10 @@ select.form-control {
   padding: var(--space-8);
   border-radius: var(--radius-sm);
   transition: all var(--duration-fast) var(--ease-standard);
-}
-
-.modal-close:hover {
-  background: var(--color-secondary);
-  color: var(--color-text);
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  z-index: 2;
 }
 
 .modal-body {
@@ -1605,4 +1627,35 @@ select:focus-visible {
     break-inside: avoid;
     margin-bottom: var(--space-16);
   }
+}
+
+/* Gold border for all major containers */
+.container, .info-grid, .modal-content, .artwork-card, .selected-artwork, .form-group, .notification-preferences, .checkbox-group {
+  border: 2px solid #bfa14a !important;
+  border-radius: 8px;
+  box-sizing: border-box;
+}
+
+/* Modal header and close button top right */
+.modal-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-end;
+  padding: var(--space-20);
+  border-bottom: 1px solid var(--color-border);
+  position: relative;
+}
+.modal-close {
+  background: none;
+  border: none;
+  font-size: var(--font-size-xl);
+  cursor: pointer;
+  color: var(--color-text-secondary);
+  padding: var(--space-8);
+  border-radius: var(--radius-sm);
+  transition: all var(--duration-fast) var(--ease-standard);
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  z-index: 2;
 }
