@@ -1665,13 +1665,13 @@ select:focus-visible {
 
 /* Switch to dark mode: set backgrounds to dark, text to light, and add icon spacing. Update CSS root variables and key selectors for a true dark theme and icon padding. */
 :root {
-  --color-background: #181818;
-  --color-surface: #414141e4;
+  --color-background: #111111f4;
+  --color-surface: #0d0d0de4;
   --color-text: #f5f5f5;
   --color-text-secondary: #bfa14a;
   --color-primary: #c4ab61;
   --color-primary-hover: #f9e296e8;
-  --color-border: #9f9e9d7d;
+  --color-border: #f9df1ae8;
 }
 
 body {
